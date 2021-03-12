@@ -3,17 +3,21 @@ import Task from  '../Task/Task';
 import NewTask from '../Task/NewTask'
 
 const LeftMenu = (props) => {
-    const {show,selectTask,selectedTask,tasks,mode,new_title,new_note,setMode} = props;
+    const {show,selectTask,selectedTask,tasks,mode,new_title,new_note,setMode,searchValue} = props;
     useEffect(()=>{
         setMode('display');
     },[selectedTask,setMode])
-    if(tasks.length==0){
+    if(selectedTask===-100){
+        
+    }
+    else if(tasks.length===0){
         return(
             <div className="place">
                 <h1>Add Tasks by clicking on the addTask Button and get Started</h1>
             </div>
         )
     }
+
     return (
         
         <div 
@@ -23,12 +27,14 @@ const LeftMenu = (props) => {
             transition:'display 3s ease-in-out',
             borderRight:'2px solid grey'
         }}>
-            {mode=='newNote' ? 
+            {mode==='newNote' ? 
             <NewTask new_title={new_title} new_note={new_note}/>
             :
             ''
         }
-            {tasks.map((task)=> <Task task={task} key={task.id} selectTask={selectTask} selected={selectedTask===task.id ? true:false}/>)}
+            {tasks.map((task)=> task.title.toLowerCase().includes(searchValue.toLowerCase()) ? 
+            <Task task={task} key={task.id} selectTask={selectTask} selected={selectedTask===task.id ? true:false}/>
+            :null)}
         </div>
     )
 }

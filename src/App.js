@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{ useState} from 'react'
 import './App.css';
 
 import {TopMenu} from './components/TopMenu/TopMenu';
@@ -12,25 +12,25 @@ function App() {
   const arr = [
     {
         id:0,
-        title:"Trial",
+        title:"Meeting",
         time:"9:23PM",
         note:"This is a note kasdlajskdlas aksjdlasjdkla"
     },
     {
       id:1,
-      title:"Trial",
+      title:"Take Dog to Vet",
       time:"9:23PM",
       note:"This is a note kasdlajskdlas aksjdlasjdkla"
     },
     {
     id:2,
-    title:"Trial",
+    title:"Meet Inder",
     time:"9:23PM",
     note:"This is a note kasdlajskdlas aksjdlasjdkla"
     },
     {
       id:3,
-      title:"Trial",
+      title:"Do some chores",
       time:"9:23PM",
       note:"This is a note kasdlajskdlas aksjdlasjdkla"
     }
@@ -41,9 +41,12 @@ function App() {
   const [show,setShow] = useState(true);
   const [task_id,setTask] = useState(0);
   const [mode,setMode] = useState('display');
-
+  const [edit,setedit] = useState(false);
   const[new_title,setTitle] = useState('Dummy title');
   const[new_note,setNote] = useState('Dummy Note');
+  const[searchValue,setSearch] = useState('');
+
+
   function panelHandler(){
     setShow(!show);
   } 
@@ -56,11 +59,11 @@ function App() {
   }
 
   function addTaskToList(){
-
+    const d = new Date();
     var new_obj = {
       id:(tasks.length*Math.random())+11,
       title:`${new_title}`,
-      time:'9:20PM',
+      time: d.getHours()+":"+`${d.getMinutes()<10 ? '0'+d.getMinutes():d.getMinutes()}`+` ${d.getHours()>12 ? 'PM':'AM' }`,
       note:`${new_note}`
     }
     
@@ -72,22 +75,49 @@ function App() {
     setTask(new_obj.id);
   }
   function deleteTask(id){
-    
     setTasks(tasks.filter((task)=>task.id!==id));
-    if(tasks.length==0){
-      
-    }
-    else{
-      setTask(tasks[0].id);
-    }
+
+    // if(tasks.length==0){
+    //   setTask(-100);
+    // }
+    // else{
+    //   setTask(tasks[0].id);
+    // }
+    
   }
   function editTask(id){
-    const change = tasks.filter((task)=>id==task.id);
+    const change = tasks.filter((task)=>id===task.id);
     setTitle(change[0].title);
     setNote(change[0].note);
     setMode('newNote');
-    // const new_arr = tasks.filter((task)=>task.id!==id);
-    // setTasks([new_arr]);
+    setedit(true);
+  }
+  async function editAdd(){
+    // var new_obj = {
+    //   id:(tasks.length*Math.random())+11,
+    //   title:`${new_title}`,
+    //   time:'9:20PM',
+    //   note:`${new_note}`
+    // }
+    
+    // tasks.push(new_obj);
+    setTasks(tasks.map((task)=>{
+      if(task.id===task_id){
+        task.title = new_title;
+        task.note = new_note;
+        const d = new Date();
+        task.time= d.getHours() +':'+ d.getMinutes()+'PM';
+      }
+      return task;
+      
+    }));
+    // setTasks(tasks.filter((task)=>task.id!==task_id));
+    
+    setMode('display');
+    setTitle('Dummy Title');
+    setNote('Dummy Note');
+    setedit(false);
+    // setTask(new_obj.id);
   }
   return (
     <div className="App">
@@ -96,10 +126,13 @@ function App() {
       addTask={addTask}
       deleteTask={deleteTask}
       selectedTask={task_id}
-      editTask={editTask}/>
+      editTask={editTask}
+      searchValue={searchValue}
+      setSearch={setSearch}/>
 
       <div className="d-flex">
       <LeftMenu
+      searchValue={searchValue}
       mode={mode}
       tasks={tasks}
       show={show} 
@@ -110,13 +143,16 @@ function App() {
       setMode={setMode}/>
 
       <RightMenu 
-      task={tasks.filter((task)=>task.id==task_id)[0]} 
+      selectedTask={task_id}
+      task={tasks.filter((task)=>task.id===task_id)[0]} 
       mode={mode}
       new_title={new_title}
       new_note={new_note}
       setTitle = {setTitle}
       setNote={setNote} 
       addTaskToList={addTaskToList}
+      edit={edit}
+      editAdd={editAdd}
       />
       </div>
     </div>
