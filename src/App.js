@@ -63,7 +63,8 @@ function App() {
     var new_obj = {
       id:(tasks.length*Math.random())+11,
       title:`${new_title}`,
-      time: d.getHours()+":"`${d.getMinutes()<10 ? '0'+d.getMinutes():d.getMinutes()}`` ${d.getHours()>12 ? 'PM':'AM' }`,
+      // eslint-disable-next-line
+      time: d.getHours()+":"+`${d.getMinutes()<10 ? '0'+d.getMinutes():d.getMinutes()}`+` ${d.getHours()>12 ? 'PM':'AM' }`,
       note:`${new_note}`
     }
     
