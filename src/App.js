@@ -54,7 +54,9 @@ function App() {
   function selectTask(id){
     setTask(id);
   }
+
   function addTask(){
+    
     setMode('newNote');
   }
 

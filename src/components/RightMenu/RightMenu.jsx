@@ -2,7 +2,8 @@ import React from 'react'
 
 const RightMenu = (props) => {
     console.log(props);
-    if(props.selectedTask===-100){
+    const {mode} = props;
+    if(mode==='newNote' && props.task===undefined){
         
     }
     else if(props.task===undefined){
@@ -10,7 +11,7 @@ const RightMenu = (props) => {
     }else{
         var {title,id,note,time} = props.task;
     }
-    const {mode,setTitle,setNote,new_title,new_note,addTaskToList,edit,editAdd} = props;
+    const {setTitle,setNote,new_title,new_note,addTaskToList,edit,editAdd} = props;
 
     if(mode==='display'){
     return (

@@ -10,7 +10,7 @@ const LeftMenu = (props) => {
     if(selectedTask===-100){
         
     }
-    else if(tasks.length===0){
+    else if(tasks.length===0 && mode!=='newNote'){
         return(
             <div className="place">
                 <h1>Add Tasks by clicking on the addTask Button and get Started</h1>
@@ -25,7 +25,8 @@ const LeftMenu = (props) => {
         style={{
             display:`${show ? 'block':'none'}`,
             transition:'display 3s ease-in-out',
-            borderRight:'2px solid grey'
+            borderRight:'2px solid grey',
+            width:'20vw'
         }}>
             {mode==='newNote' ? 
             <NewTask new_title={new_title} new_note={new_note}/>
